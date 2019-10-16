@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block label %}
+    请假记录
+    <a href="/leave_list/" class="btn btn-primary" style="float: right;margin-right: 30px;">请假</a>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+        <tr>
+            <th>假条编号</th>
+            <th>请假人</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        {% for leave in  page_obj %}
+        <tr>
+            <td>{{ leave.id }}</td>
+            <td>{{ leave.request_name }}</td>
+            <td>{{ leave.request_start }}</td>
+            <td>{{ leave.request_end }}</td>
+        {% if leave.request_status==0 %}
+            <td>审核中</td>
+        {% elif leave.request_status==1 %}
+            <td>通过</td>
+        {% elif leave.request_status==2 %}
+            <td>驳回</td>
+        {% elif leave.request_status==3 %}
+            <td>销假</td>
+        {% endif %}
+        <td><input type="button" class="btn btn-warning redo" id={{ leave.id }} value="撤销"></td>
+        </tr>
+    {% endfor %}
+    </table>
+
+
+    <div class="pagenation" style="float: right;margin-right: 30px;">
+            <a href="/leave_all_list/1/" class="btn btn-primary active">首页</a>
+
+        {% if not paginator.is_start %}
+            <a href="/leave_all_list/{{ paginator.privious_page }}/" class="btn btn-primary active">上一页</a>
+        {% endif %}
+
+        {% for page in paginator.page_range %}
+        <a href="/leave_all_list/{{ page }}" class="btn btn-primary active">{{ page }}</a>
+        {% endfor %}
+
+        {% if not paginator.is_end %}
+            <a href="/leave_all_list/{{ paginator.next_page }}" class="btn btn-primary active">下一页</a>
+        {% endif %}
+
+        <a href="/leave_all_list/{{ paginator.page_number }}/" class="btn btn-primary active">尾页</a>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(".redo").each(function () {
+            $(this).click(function () {
+                 var id=$(this).attr("id")
+                $.ajax({
+                    url:'/redo/',
+                    data:{
+                       id:id
+                    },
+                    type:'post',
+                    success:function (data) {
+                        console.log(data)
+                    },
+                    error:function(err){
+                        console.log(err)
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block label %}
+    修改个人信息
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="username">姓名</label>
+            <input type="text" class="form-control" name="username" id="username" value="{{ personal_info.username }}">
+        </div>
+        <div class="form-group">
+            <label for="sex">性别</label>
+            <select name="sex" id="sex" class="btn btn-facebook">
+                {% if personal_info.sex=='男' %}
+                    <option value="0" selected>男</option>
+                    <option value="1">女</option>
+                {% else %}
+                    <option value="0">男</option>
+                    <option value="1" selected>女</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="age">年龄</label>
+            <input type="number" class="form-control" name="age" id="age" value="{{ personal_info.age }}">
+        </div>
+        <div class="form-group">
+            <label for="identity">身份</label>
+            <select name="identity" id="identity" class="btn btn-facebook">
+                {% if personal_info.identity=='讲师' %}
+                    <option value="0" selected>讲师</option>
+                    <option value="1">学生</option>
+                {% else %}
+                    <option value="0">讲师</option>
+                    <option value="1" selected>学生</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">电话</label>
+            <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ personal_info.phone_number }}">
+        </div>
+        <div class="form-group">
+            <label for="study_time">阶段</label>
+            <input type="text" class="form-control" name="study_time" id="study_time" value="{{ personal_info.study_time }}">
+        </div>
+        <div class="form-group">
+            <label for="photo">图片</label>
+            <input type="file" name="photo" id="photo" value="{{ personal_info.photo }}">
+        </div>
+        <input type="submit" class="btn btn-warning form-control">
+    </form>
+{% endblock %}

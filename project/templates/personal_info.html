@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    个人中心
+{% endblock %}
+
+{% block label %}
+    个人中心
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+            <div class="col-xl-12 col-lg-7">
+
+              <!-- Area Chart -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">个人详情</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td rowspan="3" style="width: 300px;height: 350px;">
+                                <img src="/static/{{ personal_info.photo }}" alt="" style="width: 90%;height:90%;margin-left: auto" >
+                            </td>
+                            <th>姓名</th>
+                            <td>{{ personal_info.username }}</td>
+                            <th>性别</td>
+                            <td>{{ personal_info.sex }}</td>
+                        </tr>
+                        <tr>
+                            <th>年龄</th>
+                            <td>{{ personal_info.age }}</td>
+                            <th>身份</th>
+                            <td>{{ personal_info.identity }}</td>
+                        </tr>
+                        <tr>
+                            <th>电话</th>
+                            <td>{{ personal_info.phone_number }}</td>
+                            <th>阶段</th>
+                            <td>{{ personal_info.study_time }}</td>
+                        </tr>
+
+                    </table>
+                    <a href="/update_personal/" style="float: right;">修改详情</a>
+                </div>
+              </div>
+
+              <!-- Bar Chart -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">课程表</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>星期一</td>
+                            <td>星期二</td>
+                            <td>星期三</td>
+                            <td>星期四</td>
+                            <td>星期五</td>
+                            <td>星期六</td>
+                            <td>星期天</td>
+                        </tr>
+                        {% for line in dates %}
+                            <tr>
+                                {% for col in line %}
+                                    {% if col=='empty' %}
+                                        <td></td>
+                                        {% else %}
+                                        <td>{{ col }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+{% endblock %}
