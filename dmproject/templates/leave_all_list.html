@@ -1,0 +1,119 @@
+
+{% extends 'base.html' %}
+{% block title %}
+    请假记录
+{% endblock %}
+
+{% block label %}
+    请假记录
+    <a href="/leave_list/" class="btn btn-primary" style="float: right;">请假条</a>
+
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+    <tr>
+        <td>请假编号</td>
+        <td>请假人</td>
+        <td>请假类型</td>
+        <td>开始时间</td>
+        <td>结束原因</td>
+        <td>请假状态</td>
+        <td>操作</td>
+    </tr>
+    {% for one in page_obj %}
+        {% if one.leave_name %}
+    <tr>
+
+            <td id="leave">{{ one.id }}</td>
+            <td>{{ one.leave_name }}</td>
+            <td>{{ one.leave_type }}</td>
+            <td>{{ one.leave_start }}</td>
+            <td>{{ one.leave_end }}</td>
+            {% if one.leave_status == 0 %}
+                <td>审核中</td>
+            {% elif one.leave_status == 1 %}
+                <td>通过</td>
+            {% elif one.leave_status == 2 %}
+                <td>驳回</td>
+            {% elif one.leave_status == 3 %}
+                <td>销假</td>
+            {% endif %}
+            <td>
+                <a href="/leave_detail/?id={{ one.id }}"><button class="btn btn-danger" >审核</button></a>
+                <input type="button" class="btn btn-warning" value="撤销">
+            </td>
+
+    </tr>
+        {% endif %}
+     {% endfor %}
+    </table>
+
+
+
+    <section >
+        <ul class="pagination pagination justify-content-md-end">
+        {% if pager.has_previous_page %}
+          <li class="page-item">
+            <a class="page-link" href="/leave_all_list/{{ pager.previous_number }}/" tabindex="-1">
+              <i class="fa fa-angle-left"></i>
+              <span class="sr-only">上一页</span>
+            </a>
+          </li>
+        {% endif %}
+
+    {% for one in page_range %}
+        {% if one == page %}
+          <li class="page-item active">
+            <a class="page-link" href="/leave_all_list/{{ one }}/">{{ one }}</a>
+          </li>
+        {% else %}
+            <li class="page-item">
+            <a class="page-link" href="/leave_all_list/{{ one }}/">{{ one }}</a>
+          </li>
+        {% endif %}
+    {% endfor %}
+
+
+    {% if pager.has_next_page %}
+          <li>
+            <a class="page-link" href="/leave_all_list/{{ pager.next_number }}/">
+              <i class="fa fa-angle-right"></i>
+              <span class="sr-only">下一页</span>
+            </a>
+          </li>
+    {% endif %}
+        </ul>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+    
+        $('.btn-warning').each(
+            function () {
+                $(this).click(
+                    function () {
+                        id = $(this).parents('td').siblings('#leave').text()
+                        url = '/leave_back/'
+                        $.ajax(
+                            {
+                                url:url,
+                                type:'post',
+                                data:{'id':id},
+                                success:function (data) {
+                                    alert(data['content'])
+                                    window.location.reload()
+                                },
+                                error:function (error) {
+                                    console.log(error)
+                                }
+                            }
+                        )
+                    }
+                )
+            }
+        )
+
+    </script>
+{% endblock %}
